@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Set New Password</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #ff4500;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="password"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #ff4500;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .message {
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .back-link {
+            margin-top: 15px;
+        }
+        .back-link a {
+            color: #ff4500;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Set New Password</h1>
+        
+        <div id="message-container"></div>
+        
+        <div id="reset-form">
+            <div class="form-group">
+                <label for="password">New Password:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="confirm_password">Confirm Password:</label>
+                <input type="password" id="confirm_password" name="confirm_password" required>
+            </div>
+            
+            <button type="button" id="submit-btn">Reset Password</button>
+        </div>
+        
+        <div class="back-link">
+            <a href="{{ url_for('login_page') }}">Back to Login</a>
+        </div>
+    </div>
+    
+    <script>
+        // Get token from URL
+        const token = "{{ token }}";
+        
+        document.getElementById('submit-btn').addEventListener('click', function() {
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm_password').value;
+            
+            if (!password) {
+                showMessage('Please enter a new password', 'error');
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                showMessage('Passwords do not match', 'error');
+                return;
+            }
+            
+            // Disable button and show loading state
+            const button = this;
+            button.disabled = true;
+            button.textContent = 'Resetting...';
+            
+            // Make API request
+            fetch('/reset_password', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ 
+                    token: token,
+                    new_password: password
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    showMessage(data.error, 'error');
+                    button.disabled = false;
+                    button.textContent = 'Reset Password';
+                } else {
+                    showMessage(data.message || 'Password updated successfully!', 'success');
+                    // Redirect to login page after 2 seconds
+                    setTimeout(function() {
+                        window.location.href = "{{ url_for('login_page', reset_success=True) }}";
+                    }, 2000);
+                }
+            })
+            .catch(error => {
+                showMessage('An error occurred: ' + error.message, 'error');
+                button.disabled = false;
+                button.textContent = 'Reset Password';
+            });
+        });
+        
+        function showMessage(message, type) {
+            const container = document.getElementById('message-container');
+            container.innerHTML = `<div class="message ${type}">${message}</div>`;
+        }
+    </script>
+</body>
+</html>

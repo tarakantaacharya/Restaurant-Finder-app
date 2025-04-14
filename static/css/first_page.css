@@ -1,0 +1,446 @@
+/* Background image */
+body {
+    background-image: url('../images/cd867dbcd742b6cf022939a4a455ba05.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 80vh;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    /* For absolute positioning of overlays */
+}
+
+/* Basic loading spinner */
+#loading-spinner {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    display: none;
+}
+
+/* Location Search Overlay */
+.location-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(5px);
+    z-index: 2000;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.location-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.location-spinner {
+    width: 80px;
+    height: 80px;
+    border: 8px solid rgba(231, 70, 11, 0.2);
+    border-radius: 50%;
+    border-top-color: var(--primary-color, #e7460b);
+    animation: location-spin 1s linear infinite;
+    margin-bottom: 30px;
+}
+
+@keyframes location-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.location-message {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.location-dots {
+    font-size: 24px;
+    color: var(--primary-color, #e7460b);
+    letter-spacing: 4px;
+    animation: location-dots 1.5s infinite;
+}
+
+@keyframes location-dots {
+    0% { opacity: 0.2; }
+    20% { opacity: 1; }
+    100% { opacity: 0.2; }
+}
+
+#main-container {
+    border: 2px solid black;
+    padding: 20px;
+    width: 50%;
+    background-color: white;
+    border-radius: 20px;
+}
+
+/* Container for theme buttons */
+.theme-toggle-container {
+    display: flex;
+    flex-direction: column;
+    /* Stack buttons vertically */
+    align-items: flex-end;
+    /* Align buttons to the right */
+    position: fixed;
+    /* Fixed position to stay on the screen */
+    top: 20px;
+    /* Adjust top spacing */
+    right: 20px;
+    /* Keep it at the right corner */
+    z-index: 1000;
+}
+
+#page-title {
+    margin-top: 200px;
+}
+
+/* Additional styles for suggestion box */
+#suggestion-box {
+    position: absolute;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    max-height: 250px;
+    overflow-y: auto;
+    width: 100%;
+    /* Full width of the parent container */
+    display: none;
+    /* Hidden by default */
+    z-index: 1000;
+    top: 100%;
+    left: 0;
+    margin-top: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.suggestion-item {
+    padding: 12px 15px;
+    cursor: pointer;
+    border-bottom: 1px solid #f0f0f0;
+    transition: background-color 0.2s;
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.suggestion-header {
+    padding: 8px 15px;
+    background-color: #f8f8f8;
+    border-bottom: 1px solid #ddd;
+    font-size: 12px;
+    color: #666;
+    font-weight: bold;
+    text-align: left;
+}
+
+.suggestion-item:last-child {
+    border-bottom: none;
+}
+
+.suggestion-item:hover,
+.suggestion-item.selected {
+    background: var(--primary-color, #ff4500);
+    /* Theme color highlight on hover or when selected */
+    color: white;
+}
+
+.location-button {
+    margin-left: 10px;
+}
+
+/* #restaurant-list {
+        margin-top: 20px;
+    } */
+.restaurant-item {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+/* Header container and user controls */
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    width: calc(100% - 40px);
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1000;
+}
+
+/* User controls */
+.user-controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.user-greeting {
+    color: white;
+    font-size: 1rem;
+    font-weight: 500;
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 8px 15px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.logout-btn {
+    background-color: var(--primary-color, #e7460b);
+    color: white;
+    padding: 8px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.logout-btn:hover {
+    background-color: var(--primary-hover, #ff4500);
+    color: white;
+}
+
+/* Title styling */
+.title {
+    color: white;
+    z-index: 1000;
+    font-weight: bold;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+}
+
+/* Footer styles */
+.footer {
+    position: fixed;
+    bottom: 10px;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 5px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    margin: 0 auto;
+    border-radius: 5px;
+}
+
+.footer b {
+    color: #333;
+    font-size: 16px;
+    margin-right: 5px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/* Image for "Powered by Zomato" */
+.footer img {
+    width: 100px;
+    height: auto;
+    object-fit: contain;
+    vertical-align: middle;
+    display: inline-block;
+}
+
+.restaurant-item.card {
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+}
+
+.restaurant-item.card:hover {
+    transform: translateY(-2px);
+}
+
+.restaurant-meta {
+    margin-top: 1rem;
+}
+
+.badge {
+    margin-right: 0.5rem;
+}
+
+/* Image Analysis Overlay Styles */
+.image-analysis-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.85);
+    /* More transparent white background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    backdrop-filter: blur(2px);
+    /* Subtle blur effect */
+}
+
+.image-analysis-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.analysis-container {
+    background-color: rgba(255, 255, 255, 0.9);
+    /* More transparent white */
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    padding: 25px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.analysis-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.spinner-container {
+    width: 80px;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto 15px;
+}
+
+.spinner {
+    width: 60px;
+    height: 60px;
+    border: 4px solid rgba(255, 69, 0, 0.1);
+    border-top: 4px solid var(--primary-color, #ff4500);
+    border-radius: 50%;
+    animation: spin 1.2s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+#analysis-message {
+    font-size: 20px;
+    color: #333;
+    margin: 0 0 15px;
+    font-weight: 500;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background-color: rgba(240, 240, 240, 0.5);
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 15px 0;
+}
+
+.progress-fill {
+    height: 100%;
+    width: 0;
+    background-color: var(--primary-color, #ff4500);
+    transition: width 0.5s ease;
+}
+
+.analysis-status {
+    font-size: 14px;
+    color: #666;
+    margin: 5px 0 0;
+    font-style: italic;
+}
+
+.food-icons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 15px;
+    font-size: 24px;
+}
+
+.food-icons span {
+    animation: bounce 2s infinite;
+    display: inline-block;
+}
+
+.food-icons span:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.food-icons span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.food-icons span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+.food-icons span:nth-child(4) {
+    animation-delay: 0.6s;
+}
+
+.food-icons span:nth-child(5) {
+    animation-delay: 0.8s;
+}
+
+@keyframes bounce {
+
+    0%,
+    20%,
+    50%,
+    80%,
+    100% {
+        transform: translateY(0);
+    }
+
+    40% {
+        transform: translateY(-10px);
+    }
+
+    60% {
+        transform: translateY(-5px);
+    }
+}
+
+/* Additional styles for analysis footer if needed */
+.analysis-footer {
+    margin-top: 20px;
+    font-size: 12px;
+    color: #777;
+    font-style: italic;
+}

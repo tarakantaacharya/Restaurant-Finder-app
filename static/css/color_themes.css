@@ -1,0 +1,120 @@
+/* Color Theme Variables */
+
+/* Orange Theme (Default) */
+[data-color-theme="orange"] {
+    --primary-color: #e7460b;
+    --primary-hover: #d13d08;
+    --heading-color: #e7460b;
+    --button-bg: #e7460b;
+    --button-hover: #d13d08;
+    --link-color: #e7460b;
+}
+
+[data-color-theme="orange"][data-theme="dark"] {
+    --heading-color: #ff6b3d;
+    --button-bg: #ff6b3d;
+    --button-hover: #ff8c66;
+    --link-color: #ff8c66;
+}
+
+/* Yellow Theme */
+[data-color-theme="yellow"] {
+    --primary-color: #ffc107;
+    --primary-hover: #e0a800;
+    --heading-color: #ffc107;
+    --button-bg: #ffc107;
+    --button-hover: #e0a800;
+    --link-color: #ffc107;
+}
+
+[data-color-theme="yellow"][data-theme="dark"] {
+    --heading-color: #ffcd39;
+    --button-bg: #ffcd39;
+    --button-hover: #ffd966;
+    --link-color: #ffd966;
+}
+
+/* Purple Theme */
+[data-color-theme="purple"] {
+    --primary-color: #6f42c1;
+    --primary-hover: #5e37a6;
+    --heading-color: #6f42c1;
+    --button-bg: #6f42c1;
+    --button-hover: #5e37a6;
+    --link-color: #6f42c1;
+}
+
+[data-color-theme="purple"][data-theme="dark"] {
+    --heading-color: #8c68d6;
+    --button-bg: #8c68d6;
+    --button-hover: #9d7de3;
+    --link-color: #9d7de3;
+}
+
+/* Red Theme */
+[data-color-theme="red"] {
+    --primary-color: #dc3545;
+    --primary-hover: #c82333;
+    --heading-color: #dc3545;
+    --button-bg: #dc3545;
+    --button-hover: #c82333;
+    --link-color: #dc3545;
+}
+
+[data-color-theme="red"][data-theme="dark"] {
+    --heading-color: #e35d6a;
+    --button-bg: #e35d6a;
+    --button-hover: #e9798a;
+    --link-color: #e9798a;
+}
+
+/* Blue Theme */
+[data-color-theme="blue"] {
+    --primary-color: #0d6efd;
+    --primary-hover: #0b5ed7;
+    --heading-color: #0d6efd;
+    --button-bg: #0d6efd;
+    --button-hover: #0b5ed7;
+    --link-color: #0d6efd;
+}
+
+[data-color-theme="blue"][data-theme="dark"] {
+    --heading-color: #3d8bfd;
+    --button-bg: #3d8bfd;
+    --button-hover: #6ea8fe;
+    --link-color: #6ea8fe;
+}
+
+/* Violet Theme */
+[data-color-theme="violet"] {
+    --primary-color: #8a2be2;
+    --primary-hover: #7525c1;
+    --heading-color: #8a2be2;
+    --button-bg: #8a2be2;
+    --button-hover: #7525c1;
+    --link-color: #8a2be2;
+}
+
+[data-color-theme="violet"][data-theme="dark"] {
+    --heading-color: #a15aea;
+    --button-bg: #a15aea;
+    --button-hover: #b77ef1;
+    --link-color: #b77ef1;
+}
+
+/* Pink Theme */
+[data-color-theme="pink"] {
+    --primary-color: #d63384;
+    --primary-hover: #b02a70;
+    --heading-color: #d63384;
+    --button-bg: #d63384;
+    --button-hover: #b02a70;
+    --link-color: #d63384;
+}
+
+[data-color-theme="pink"][data-theme="dark"] {
+    --heading-color: #e05c9c;
+    --button-bg: #e05c9c;
+    --button-hover: #e685b5;
+    --link-color: #e685b5;
+}

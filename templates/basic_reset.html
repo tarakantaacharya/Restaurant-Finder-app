@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Reset Password</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/color_themes.css') }}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+        .container {
+            background-color: var(--container-bg);
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+        }
+        h1 {
+            color: var(--heading-color);
+            margin-top: 0;
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: var(--text-color);
+        }
+        input[type="email"], input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            box-sizing: border-box;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 16px;
+            background-color: var(--input-bg);
+            color: var(--text-color);
+        }
+        input:focus {
+            outline: none;
+            border-color: var(--heading-color);
+            box-shadow: 0 0 0 2px rgba(231, 70, 11, 0.2);
+        }
+        button {
+            background-color: var(--button-bg);
+            color: var(--button-text);
+            border: none;
+            padding: 12px 20px;
+            cursor: pointer;
+            width: 100%;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: var(--button-hover);
+        }
+        .message {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            text-align: center;
+        }
+        .success {
+            background-color: var(--success-bg);
+            color: var(--success-text);
+            border: 1px solid var(--success-text);
+        }
+        .error {
+            background-color: var(--error-bg);
+            color: var(--error-text);
+            border: 1px solid var(--error-text);
+        }
+        .links {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .links a {
+            color: var(--link-color);
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        .links a:hover {
+            text-decoration: underline;
+        }
+        .otp-info {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: var(--info-bg);
+            border-radius: 4px;
+            border-left: 4px solid var(--info-text);
+        }
+        .otp-info h3 {
+            margin-top: 0;
+            color: var(--info-text);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        {% if verify %}
+        <h1>Reset Your Password</h1>
+        
+        {% if error %}
+        <div class="message error">{{ error }}</div>
+        {% endif %}
+        
+        <form action="{{ url_for('reset_password') }}" method="post">
+            <div class="form-group">
+                <label for="email">Email Address:</label>
+                <input type="email" id="email" name="email" value="{{ email }}" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="token">One-Time Password (OTP):</label>
+                <input type="text" id="token" name="token" value="{{ token }}" placeholder="Enter the 6-digit OTP sent to your email" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">New Password:</label>
+                <input type="password" id="password" name="password" placeholder="Enter your new password" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="confirm_password">Confirm Password:</label>
+                <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm your new password" required>
+            </div>
+            
+            <button type="submit">Reset Password</button>
+        </form>
+        
+        <div class="otp-info">
+            <h3>About Your OTP</h3>
+            <p>The One-Time Password (OTP) was sent to your email address. Please check your inbox and spam folder.</p>
+            <p>The OTP is valid for 15 minutes only.</p>
+        </div>
+        
+        <div class="links">
+            <a href="{{ url_for('forgot_password') }}">Resend OTP</a> | 
+            <a href="{{ url_for('login_page') }}">Back to Login</a>
+        </div>
+        
+        {% else %}
+        <h1>Forgot Password</h1>
+        
+        {% if message %}
+        <div class="message {% if success %}success{% else %}error{% endif %}">{{ message }}</div>
+        {% endif %}
+        
+        {% if error %}
+        <div class="message error">{{ error }}</div>
+        {% endif %}
+        
+        <form action="{{ url_for('forgot_password') }}" method="post">
+            <div class="form-group">
+                <label for="email">Email Address:</label>
+                <input type="email" id="email" name="email" placeholder="Enter your registered email" required>
+            </div>
+            
+            <button type="submit">Send OTP</button>
+        </form>
+        
+        <div class="otp-info">
+            <h3>How it works</h3>
+            <p>We'll send a 6-digit One-Time Password (OTP) to your email address.</p>
+            <p>Use this OTP along with your email to reset your password.</p>
+            <p><strong>Important:</strong> Please check both your inbox and spam folder for the email containing your OTP.</p>
+        </div>
+        
+        <div class="links">
+            <a href="{{ url_for('reset_password') }}">Already have an OTP?</a> | 
+            <a href="{{ url_for('login_page') }}">Back to Login</a>
+        </div>
+        {% endif %}
+    </div>
+    
+    <!-- Include Theme Toggle -->
+    {% include 'theme_toggle.html' %}
+    
+    <script>
+        // Simple password validation
+        document.addEventListener('DOMContentLoaded', function() {
+            const passwordForm = document.querySelector('form[action="{{ url_for("reset_password") }}"]');
+            if (passwordForm) {
+                passwordForm.addEventListener('submit', function(e) {
+                    const password = document.getElementById('password').value;
+                    const confirmPassword = document.getElementById('confirm_password').value;
+                    
+                    if (password !== confirmPassword) {
+                        e.preventDefault();
+                        alert('Passwords do not match!');
+                    }
+                    
+                    if (password.length < 8) {
+                        e.preventDefault();
+                        alert('Password must be at least 8 characters long!');
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Reset Password</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #ff4500;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="email"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #ff4500;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .message {
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .back-link {
+            margin-top: 15px;
+        }
+        .back-link a {
+            color: #ff4500;
+            text-decoration: none;
+        }
+        #response {
+            display: none;
+            margin-top: 20px;
+        }
+        #token-display {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            word-break: break-all;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Reset Your Password</h1>
+        
+        <div id="message-container"></div>
+        
+        <div id="request-form">
+            <div class="form-group">
+                <label for="email">Email Address:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            
+            <button type="button" id="submit-btn">Send Reset Link</button>
+        </div>
+        
+        <div id="response">
+            <h3>Response:</h3>
+            <div id="response-message"></div>
+            <div id="token-display"></div>
+        </div>
+        
+        <div class="back-link">
+            <a href="{{ url_for('login_page') }}">Back to Login</a>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('submit-btn').addEventListener('click', function() {
+            const email = document.getElementById('email').value;
+            
+            if (!email) {
+                showMessage('Please enter your email address', 'error');
+                return;
+            }
+            
+            // Disable button and show loading state
+            const button = this;
+            button.disabled = true;
+            button.textContent = 'Sending...';
+            
+            // Make API request
+            fetch('/request_password_reset', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email: email })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    showMessage(data.error, 'error');
+                } else {
+                    showMessage(data.message || 'Password reset link sent successfully', 'success');
+                    
+                    // For development, show the token
+                    if (data.reset_token) {
+                        document.getElementById('response').style.display = 'block';
+                        document.getElementById('response-message').textContent = 'For development purposes, here is your reset token:';
+                        document.getElementById('token-display').textContent = data.reset_token;
+                    }
+                }
+            })
+            .catch(error => {
+                showMessage('An error occurred: ' + error.message, 'error');
+            })
+            .finally(() => {
+                // Re-enable button
+                button.disabled = false;
+                button.textContent = 'Send Reset Link';
+            });
+        });
+        
+        function showMessage(message, type) {
+            const container = document.getElementById('message-container');
+            container.innerHTML = `<div class="message ${type}">${message}</div>`;
+        }
+    </script>
+</body>
+</html>

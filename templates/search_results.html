@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/color_themes.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/search_results.css') }}">
+    <style>
+        /* Theme-specific styles */
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+        #main-container {
+            background-color: var(--container-bg);
+            box-shadow: var(--shadow);
+        }
+        #page-title {
+            color: var(--heading-color);
+        }
+        .search-info {
+            color: var(--text-color);
+        }
+        .restaurant-card {
+            background-color: var(--card-bg);
+            border-color: var(--card-border);
+            box-shadow: var(--shadow);
+        }
+        .restaurant-name {
+            color: var(--heading-color);
+        }
+        .restaurant-details {
+            color: var(--text-color);
+        }
+        .restaurant-rating {
+            background-color: var(--button-bg);
+            color: var(--button-text);
+        }
+        .back-button {
+            background-color: var(--button-bg);
+            color: var(--button-text);
+        }
+        .back-button:hover {
+            background-color: var(--button-hover);
+        }
+        .loading-overlay {
+            background-color: rgba(var(--bg-color-rgb, 245, 245, 245), 0.8);
+        }
+        .loading-text {
+            color: black !important;
+        }
+    </style>
+    <script src="{{ url_for('static', filename='js/search_results.js') }}"></script>
+</head>
+<body>
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay">
+        <div class="loading-container">
+            <div class="loading-spinner"></div>
+            <p class="loading-text">Searching restaurants</p>
+        </div>
+    </div>
+
+    <div id="main-container">
+        <h1 id="page-title">🍽️ Search Results 🍽️</h1>
+        <div id="loading">Loading results...</div>
+        <div id="error-message"></div>
+        
+        <!-- Search results container -->
+        <div id="search-results" class="restaurant-grid">
+            {% if restaurants %}
+                {% for restaurant in restaurants %}
+                <div class="restaurant-card">
+                    {% if restaurant.featured_image %}
+                    <img src="{{ restaurant.featured_image }}" alt="{{ restaurant.Restaurant_Name }}" class="restaurant-image">
+                    {% else %}
+                    <div class="default-image">No Image Available</div>
+                    {% endif %}
+                    
+                    <h3>{{ restaurant.Restaurant_Name }}</h3>
+                    
+                    <div class="restaurant-details">
+                        <div class="detail-item">
+                            <span><strong>📍 Location:</strong></span>
+                            <span>{{ restaurant.Locality }}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span><strong>💰 Currency:</strong></span>
+                            <span>{{ restaurant.Currency }}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span><strong>🍴 Cuisine:</strong></span>
+                            <span>{{ restaurant.Cuisine }}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="button-container">
+                        <a href="{{ url_for('get_restaurant_details', name=restaurant.Restaurant_Name) }}" class="view-details-btn">View Details</a>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="no-results">
+                    <div class="alert alert-info">
+                        <h3>No restaurants found</h3>
+                        <p>Try adjusting your search criteria</p>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+        
+        <!-- Pagination with up to 5 numbers and Next button -->
+        <div id="pagination">
+            {% if pages is defined and pages > 1 %}
+                {% set start_page = [current_page - 2, 1]|max %}
+                {% set end_page = [start_page + 4, pages]|min %}
+                {% set start_page = [end_page - 4, 1]|max %}
+                
+                {% if current_page > 1 %}
+                <a href="{{ url_for('get_restaurants', search=request.args.get('search', ''), page=current_page-1) }}" class="page-link">Previous</a>
+                {% endif %}
+                
+                {% for page_num in range(start_page, end_page + 1) %}
+                    {% if page_num == current_page %}
+                    <span class="current-page">{{ page_num }}</span>
+                    {% else %}
+                    <a href="{{ url_for('get_restaurants', search=request.args.get('search', ''), page=page_num) }}" class="page-link">{{ page_num }}</a>
+                    {% endif %}
+                {% endfor %}
+                
+                {% if current_page < pages %}
+                <a href="{{ url_for('get_restaurants', search=request.args.get('search', ''), page=current_page+1) }}" class="page-link">Next</a>
+                {% endif %}
+            {% endif %}
+        </div>
+        
+        <div class="back-link">
+            <a href="{{ url_for('home') }}">← Back to Search</a>
+        </div>
+    </div>
+    
+    <!-- Include Theme Toggle -->
+    {% include 'theme_toggle.html' %}
+</body>
+</html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Restaurant Search</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/color_themes.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Override login.css styles with theme variables */
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+        .container {
+            background-color: var(--container-bg);
+        }
+        .form-container {
+            background-color: var(--container-bg);
+            box-shadow: var(--shadow);
+        }
+        .form-content h2 {
+            color: var(--heading-color);
+        }
+        .form-group label {
+            color: var(--text-color);
+        }
+        .form-group input {
+            background-color: var(--input-bg);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+        }
+        .submit-btn {
+            background-color: var(--button-bg);
+            color: var(--button-text);
+        }
+        .submit-btn:hover {
+            background-color: var(--button-hover);
+        }
+        .form-footer a {
+            color: var(--link-color);
+        }
+        .error-message {
+            background-color: var(--error-bg);
+            color: var(--error-text);
+        }
+        .success-message {
+            background-color: var(--success-bg);
+            color: var(--success-text);
+        }
+        .info-container {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+            color: white !important;
+        }
+        .info-container h2, .info-container p, .info-container li, .info-container span {
+            color: white !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="form-container">
+            <div class="form-header">
+                <div class="logo">
+                    <span>🍽️</span>
+                    <h1>Restaurant Finder</h1>
+                </div>
+                <div class="tabs">
+                    <button class="tab-btn active" id="login-tab">Login</button>
+                    <button class="tab-btn" id="register-tab">Register</button>
+                </div>
+            </div>
+
+            <div class="form-content">
+                <!-- Login Form -->
+                <form id="login-form" class="active-form" action="{{ url_for('login_page') }}" method="post">
+                    <h2>Welcome Back!</h2>
+                    {% if request.args.get('reset_success') %}
+                    <div class="success-message">Your password has been reset successfully. Please log in with your new password.</div>
+                    {% endif %}
+                    {% if session.get('flash_message') %}
+                    <div class="success-message">{{ session.pop('flash_message') }}</div>
+                    {% endif %}
+                    {% if login_error %}
+                    <div class="error-message">{{ login_error }}</div>
+                    {% endif %}
+                    <div class="form-group">
+                        <label for="login-email">Email</label>
+                        <input type="email" id="login-email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <input type="password" id="login-password" name="password" required>
+                    </div>
+                    <div class="forgot-password">
+                        <a href="{{ url_for('forgot_password') }}">Forgot Password?</a>
+                    </div>
+                    <div class="form-group remember-me">
+                        <input type="checkbox" id="remember-me" name="remember">
+                        <label for="remember-me">Remember me</label>
+                    </div>
+                    <button type="submit" class="submit-btn">Login</button>
+                    <div class="form-footer"></div>
+                </form>
+
+                <!-- Register Form -->
+                <form id="register-form" action="{{ url_for('register') }}" method="post">
+                    <h2>Create Account</h2>
+                    {% if register_error %}
+                    <div class="error-message">{{ register_error }}</div>
+                    {% endif %}
+                    <div class="form-group">
+                        <label for="register-name">Full Name</label>
+                        <input type="text" id="register-name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-email">Email</label>
+                        <input type="email" id="register-email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-password">Password</label>
+                        <input type="password" id="register-password" name="password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-confirm-password">Confirm Password</label>
+                        <input type="password" id="register-confirm-password" name="confirm_password" required>
+                    </div>
+                    <div class="form-group terms">
+                        <input type="checkbox" id="terms" name="terms" required>
+                        <label for="terms">I agree to the <a href="#">Terms and Conditions</a></label>
+                    </div>
+                    <button type="submit" class="submit-btn">Register</button>
+                </form>
+            </div>
+        </div>
+        
+        <div class="info-container">
+            <div class="info-content">
+                <h2>Find Your Perfect Dining Experience</h2>
+                <p>Discover the best restaurants, cafes, and dining spots around you.</p>
+                <ul class="features">
+                    <li><span>🔍</span> Search restaurants by name, cuisine, or location</li>
+                    <li><span>⭐</span> Read reviews and ratings from other diners</li>
+                    <li><span>📍</span> Find nearby restaurants with our location feature</li>
+                    <li><span>📱</span> Save your favorite spots for quick access</li>
+                </ul>
+            </div>
+            <div class="food-images">
+                <div class="image-container">
+                    <img src="{{ url_for('static', filename='images/food1.jpg') }}" alt="Food Image" onerror="this.src='{{ url_for('static', filename='images/default-food.jpg') }}';">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Include Theme Toggle -->
+    {% include 'theme_toggle.html' %}
+    
+    <script src="{{ url_for('static', filename='js/login.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,152 @@
+/* Theme Variables */
+:root {
+    /* Light Theme (Default) */
+    --bg-color: #f5f5f5;
+    --container-bg: #ffffff;
+    --text-color: #333333;
+    --heading-color: var(--primary-color, #e7460b);
+    --border-color: #dddddd;
+    --input-bg: #ffffff;
+    --input-border: #cccccc;
+    --button-bg: var(--primary-color, #e7460b);
+    --button-text: #ffffff;
+    --button-hover: var(--primary-hover, #d13d08);
+    --link-color: var(--primary-color, #e7460b);
+    --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    --success-bg: #d4edda;
+    --success-text: #155724;
+    --error-bg: #f8d7da;
+    --error-text: #721c24;
+    --info-bg: #e8f4fd;
+    --info-text: #0d6efd;
+    --card-bg: #ffffff;
+    --card-border: #eeeeee;
+    --header-bg: rgba(0, 0, 0, 0.7);
+    --header-text: #ffffff;
+    --footer-bg: #f8f9fa;
+    --footer-text: #333333;
+    --search-container-bg: #ffffff;
+    --restaurant-list-bg: #ffffff;
+}
+
+/* Dark Theme */
+[data-theme="dark"] {
+    --bg-color: #121212;
+    --container-bg: #1e1e1e;
+    --text-color: #e0e0e0;
+    --heading-color: var(--primary-color, #ff6b3d);
+    --border-color: #333333;
+    --input-bg: #2d2d2d;
+    --input-border: #444444;
+    --button-bg: var(--primary-color, #ff6b3d);
+    --button-text: #ffffff;
+    --button-hover: var(--primary-hover, #ff8c66);
+    --link-color: var(--primary-color, #ff8c66);
+    --shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    --success-bg: #1e4620;
+    --success-text: #a3d9a5;
+    --error-bg: #471a1c;
+    --error-text: #f5c2c7;
+    --info-bg: #172c45;
+    --info-text: #6ea8fe;
+    --card-bg: #2d2d2d;
+    --card-border: #333333;
+    --header-bg: rgba(0, 0, 0, 0.9);
+    --header-text: #e0e0e0;
+    --footer-bg: #1a1a1a;
+    --footer-text: #e0e0e0;
+    --search-container-bg: #1e1e1e;
+    --restaurant-list-bg: #1e1e1e;
+}
+
+/* Apply theme variables to elements */
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.container, .form-container, .info-container {
+    background-color: var(--container-bg);
+    box-shadow: var(--shadow);
+}
+
+h1, h2, h3 {
+    color: var(--heading-color);
+}
+
+input, select, textarea {
+    background-color: var(--input-bg);
+    color: var(--text-color);
+    border: 1px solid var(--input-border);
+}
+
+button, .submit-btn {
+    background-color: var(--button-bg);
+    color: var(--button-text);
+}
+
+button:hover, .submit-btn:hover {
+    background-color: var(--button-hover);
+}
+
+a {
+    color: var(--link-color);
+}
+
+.success-message {
+    background-color: var(--success-bg);
+    color: var(--success-text);
+}
+
+.error-message {
+    background-color: var(--error-bg);
+    color: var(--error-text);
+}
+
+.info-box {
+    background-color: var(--info-bg);
+    color: var(--info-text);
+}
+
+/* Theme Toggle Button */
+.theme-toggle {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: var(--button-bg);
+    color: var(--button-text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: var(--shadow);
+    z-index: 1000;
+    border: none;
+    transition: background-color 0.3s ease;
+}
+
+.theme-toggle:hover {
+    background-color: var(--button-hover);
+}
+
+.theme-toggle i {
+    font-size: 24px;
+}
+
+/* For screens smaller than 768px */
+@media (max-width: 768px) {
+    .theme-toggle {
+        width: 40px;
+        height: 40px;
+        bottom: 15px;
+        right: 15px;
+    }
+    
+    .theme-toggle i {
+        font-size: 20px;
+    }
+}

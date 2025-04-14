@@ -1,0 +1,3 @@
+ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY 'Tarak@2024';
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION;
+FLUSH PRIVILEGES;

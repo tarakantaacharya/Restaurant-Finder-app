@@ -1,0 +1,59 @@
+# Web Framework
+Flask==2.3.3
+Werkzeug==2.3.7
+Jinja2==3.1.2
+itsdangerous==2.1.2
+click==8.1.7
+
+# Database
+pymysql==1.1.0
+cryptography==41.0.4  # Required for PyMySQL's secure connections
+
+# HTTP Requests
+requests==2.31.0
+urllib3==2.0.5
+certifi==2023.7.22
+charset-normalizer==3.2.0
+idna==3.4
+
+# CORS Support
+flask-cors==4.0.0
+
+# Environment Variables
+python-dotenv==1.0.0
+
+# Production Server
+gunicorn==21.2.0
+
+# Utilities
+six==1.16.0
+MarkupSafe==2.1.3
+
+# Optional - for better performance
+gevent==23.9.1
+greenlet==2.0.2
+
+# Optional - for image processing (if your app handles images)
+Pillow==10.0.1
+
+# Optional - for form handling
+WTForms==3.0.1
+Flask-WTF==1.1.1
+
+# Optional - for API documentation
+Flask-RESTful==0.3.10
+apispec==6.3.0
+marshmallow==3.20.1
+
+# Security and Authentication
+Flask-Talisman==1.0.0  # HTTP security headers
+PyJWT==2.8.0  # JSON Web Tokens
+Flask-Login==0.6.2  # User session management
+bcrypt==4.0.1  # Password hashing
+# Flask-Session removed - using Flask's built-in sessions instead
+
+# Optional - for monitoring
+prometheus-flask-exporter==0.22.4
+
+mysql-connector-python
+

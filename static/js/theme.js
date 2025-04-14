@@ -1,0 +1,67 @@
+// Theme Switcher
+document.addEventListener('DOMContentLoaded', function() {
+    // Check for saved theme preference or use default
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    
+    // Apply the theme
+    document.documentElement.setAttribute('data-theme', currentTheme);
+    
+    // Fetch the site-wide color theme from the server
+    fetchSiteColorTheme();
+    
+    // Update button icon based on current theme
+    updateThemeIcon(currentTheme);
+    
+    // Add event listener to theme toggle button
+    const themeToggle = document.getElementById('theme-toggle');
+    if (themeToggle) {
+        themeToggle.addEventListener('click', function() {
+            // Get current theme
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            
+            // Switch theme
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            // Update theme
+            document.documentElement.setAttribute('data-theme', newTheme);
+            
+            // Save preference to localStorage
+            localStorage.setItem('theme', newTheme);
+            
+            // Update button icon
+            updateThemeIcon(newTheme);
+        });
+    }
+});
+
+// Fetch the site-wide color theme from the server
+function fetchSiteColorTheme() {
+    fetch('/api/current_theme')
+        .then(response => response.json())
+        .then(data => {
+            if (data.theme) {
+                // Apply the color theme
+                document.documentElement.setAttribute('data-color-theme', data.theme);
+                console.log('Applied color theme:', data.theme);
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching color theme:', error);
+            // Use default orange theme if there's an error
+            document.documentElement.setAttribute('data-color-theme', 'orange');
+        });
+}
+
+// Update the theme toggle button icon based on current theme
+function updateThemeIcon(theme) {
+    const themeToggle = document.getElementById('theme-toggle');
+    if (themeToggle) {
+        if (theme === 'dark') {
+            themeToggle.innerHTML = '☀️'; // Sun icon for dark mode (to switch to light)
+            themeToggle.setAttribute('title', 'Switch to Light Mode');
+        } else {
+            themeToggle.innerHTML = '🌙'; // Moon icon for light mode (to switch to dark)
+            themeToggle.setAttribute('title', 'Switch to Dark Mode');
+        }
+    }
+}
