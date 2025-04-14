@@ -32,12 +32,12 @@ name: 'Deploy to Cloud Run from Source'
 on:
   push:
     branches:
-      - '"main"'
+      - 'main'
 
 env:
-  PROJECT_ID: 'my-project' # TODO: update to your Google Cloud project ID
-  REGION: 'us-central1' # TODO: update to your region
-  SERVICE: 'my-service' # TODO: update to your service name
+  PROJECT_ID: 'restaurant-finder-app' # Update this to your actual Google Cloud project ID
+  REGION: 'us-central1' 
+  SERVICE_NAME: 'restaurant-finder' # Update this to your desired Cloud Run service name
 
 jobs:
   deploy:
@@ -59,15 +59,32 @@ jobs:
         name: 'Authenticate to Google Cloud'
         uses: 'google-github-actions/auth@f112390a2df9932162083945e46d439060d66ec2' # google-github-actions/auth@v2
         with:
-          workload_identity_provider: 'projects/123456789/locations/global/workloadIdentityPools/my-pool/providers/my-provider' # TODO: replace with your workload identity provider
+          workload_identity_provider: '${{ secrets.WIF_PROVIDER }}' # Set this in GitHub secrets
+          service_account: '${{ secrets.WIF_SERVICE_ACCOUNT }}' # Set this in GitHub secrets
 
       - name: 'Deploy to Cloud Run'
+        id: 'deploy'
         uses: 'google-github-actions/deploy-cloudrun@33553064113a37d688aa6937bacbdc481580be17' # google-github-actions/deploy-cloudrun@v2
         with:
-          service: '${{ env.SERVICE }}'
-          region: '${{ env.REGION }}'
-          # NOTE: If using a different source folder, update the image name below:
-          source: './'
+          service: ${{ env.SERVICE_NAME }}
+          region: ${{ env.REGION }}
+          source: .
+          # Pass environment variables from GitHub secrets to Cloud Run
+          env_vars: |
+            DATABASE_HOST_LOCAL=${{ secrets.DATABASE_HOST_LOCAL }}
+            DATABASE_USER=${{ secrets.DATABASE_USER }}
+            DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}
+            DATABASE_NAME=${{ secrets.DATABASE_NAME }}
+            DATABASE_PORT=${{ secrets.DATABASE_PORT }}
+            SECRET_KEY=${{ secrets.SECRET_KEY }}
+            GEO_API_KEY=${{ secrets.GEO_API_KEY }}
+            GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}
+            GEMINI_MODEL_NAME=${{ secrets.GEMINI_MODEL_NAME }}
+            EMAIL_HOST=${{ secrets.EMAIL_HOST }}
+            EMAIL_PORT=${{ secrets.EMAIL_PORT }}
+            EMAIL_USER=${{ secrets.EMAIL_USER }}
+            EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }}
+            EMAIL_FROM=${{ secrets.EMAIL_FROM }}
 
       # If required, use the Cloud Run URL output in later steps
       - name: 'Show output'

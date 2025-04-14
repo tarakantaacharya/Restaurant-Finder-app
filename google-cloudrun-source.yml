@@ -39,12 +39,20 @@ jobs:
           source: .
           # Pass environment variables from GitHub secrets to Cloud Run
           env_vars: |
-            DB_HOST=${{ secrets.DB_HOST }}
-            DB_USER=${{ secrets.DB_USER }}
-            DB_PASSWORD=${{ secrets.DB_PASSWORD }}
-            DB_NAME=${{ secrets.DB_NAME }}
+            DATABASE_HOST_LOCAL=${{ secrets.DATABASE_HOST_LOCAL }}
+            DATABASE_USER=${{ secrets.DATABASE_USER }}
+            DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}
+            DATABASE_NAME=${{ secrets.DATABASE_NAME }}
+            DATABASE_PORT=${{ secrets.DATABASE_PORT }}
             SECRET_KEY=${{ secrets.SECRET_KEY }}
-            # Add any other environment variables your app needs
+            GEO_API_KEY=${{ secrets.GEO_API_KEY }}
+            GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}
+            GEMINI_MODEL_NAME=${{ secrets.GEMINI_MODEL_NAME }}
+            EMAIL_HOST=${{ secrets.EMAIL_HOST }}
+            EMAIL_PORT=${{ secrets.EMAIL_PORT }}
+            EMAIL_USER=${{ secrets.EMAIL_USER }}
+            EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }}
+            EMAIL_FROM=${{ secrets.EMAIL_FROM }}
           
       # If required, use the Cloud Run URL output in later steps
       - name: Show Output
